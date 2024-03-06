@@ -86,9 +86,11 @@ function App() {
               </tr>
               </thead>
               <tbody>
-              {todos.map(todo => (
+              {todos.length >= 1 ? todos.map(todo => (
                   <Todo todo={todo} key={todo.id} toggleTodo={ () => toggleTodo(todo.id)} deleteTodo={() => deleteTodo(todo.id)  }/>
-              ))}
+              )) : <tr>
+                <td colSpan={3}> Rien à afficher dans ce tableau. Ajouter une tâche</td>
+              </tr>}
               </tbody>
 
             </table>
