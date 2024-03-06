@@ -1,15 +1,16 @@
 import {useEffect, useState} from 'react'
 import {Input} from "./Components/FormUtilities/Input.jsx";
 import {Todo} from "./Components/Todos/Todo.jsx";
+import useFetch from "./CustomHooks/useFetch.jsx";
 function App() {
 
   const [todos, setTodos] = useState(JSON.parse(localStorage.getItem('ReduxTodos')) || []);
-
   // on utilise useEffect pour actualiser les todos dans localStorage
   useEffect(() => {
     localStorage.setItem('ReduxTodos', JSON.stringify(todos));
   }, [todos]);
 
+  const {isLoading, errorMessage, data } = useFetch('https://jsonplaceholder.typicode.com/todos')
 
   const [input, setInput] = useState('');
 
@@ -86,10 +87,13 @@ function App() {
               </tr>
               </thead>
               <tbody>
-              {todos.length >= 1 ? todos.map(todo => (
+              {
+                todos.length >= 1 ?
+                    todos.map(todo => (
                   <Todo todo={todo} key={todo.id} toggleTodo={ () => toggleTodo(todo.id)} deleteTodo={() => deleteTodo(todo.id)  }/>
-              )) : <tr>
-                <td colSpan={3}> Rien à afficher dans ce tableau. Ajouter une tâche</td>
+              )) :
+                    <tr>
+                <td colSpan={3} ><div className="alert alert-warning" role="alert" > Rien à afficher dans ce tableau. Ajouter une tâche </div>  </td>
               </tr>}
               </tbody>
 
